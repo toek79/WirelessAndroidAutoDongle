@@ -17,6 +17,8 @@ PIDFILE="/var/run/$DAEMON.pid"
 RETVAL=0
 
 start() {
+	modprobe -a dwc2 libcomposite # USB gadget drivers
+	echo 8 > /proc/sys/kernel/printk
 	mountpoint -q /sys/kernel/config || mount -t configfs none /sys/kernel/config
 
 	# Setup accessory config
@@ -60,8 +62,12 @@ start() {
 	mount -t functionfs mtp "$FUNCTIONFS_PATH"
 	start-stop-daemon -S -b -q -m -p "$PIDFILE" -x "/usr/sbin/$DAEMON"
 	RETVAL=$?
-	sleep 1
-
+	sleep 1                                                                      
+	ls /sys/class/udc/ > /sys/kernel/config/usb_gadget/default/UDC               
+    	sleep 1                                                                    
+    	echo "" > /sys/kernel/config/usb_gadget/default/UDC                          
+    	sleep 0.5
+	echo 7 > /proc/sys/kernel/printk       
 	logger -s -p INFO -t usb_gadget Enabled default usb gadget
 }
 

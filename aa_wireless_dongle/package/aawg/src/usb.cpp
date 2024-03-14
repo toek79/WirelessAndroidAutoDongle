@@ -5,6 +5,7 @@
 #include "common.h"
 #include "uevent.h"
 #include "usb.h"
+#include <unistd.h>
 
 constexpr const char* defaultGadgetName = "default";
 constexpr const char* accessoryGadgetName = "accessory";
@@ -55,6 +56,7 @@ void UsbManager::writeGadgetFile(std::string gadgetName, std::string relativeFil
     fputs(content, gadgetFile);
     fputc('\n', gadgetFile);
     fclose(gadgetFile);
+    usleep(1000  * 1000);
 }
 
 void UsbManager::enableGadget(std::string gadgetName) {

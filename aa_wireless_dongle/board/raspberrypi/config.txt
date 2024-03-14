@@ -24,3 +24,4 @@ dtparam=krnbt=on
 
 # Enable dwc2 required for gadget mode
 dtoverlay=dwc2,dr_mode=peripheral
+enable_uart=1
